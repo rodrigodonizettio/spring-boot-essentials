@@ -1,0 +1,146 @@
+- YOUTUBE-LINK: <Spring Boot essentials: O essencial do Spring Boot> https://www.youtube.com/watch?v=R-F-UcDo_5I&list=PL62G310vn6nF3gssjqfCKLpTK2sZJ_a_1
+
+- SPRING: <Framework escrito em Java que resolve diversos problemas utilizando técnicas, como: Injeção de Dependência, Inversão de Controle, Container, etc>.
+
+- SPRING-BOOT: <Ferramenta que permite resolver as múltiplas configurações básicas necessárias ao inicializar um projeto Spring. Você especifica o que você quer em seu projeto e ele já monta com tudo configurado. Não precisa explicitar versão no POM.xml>.
+
+- SPRING-INITIALIZR: http://start.spring.io <Gerador de projeto para Spring>
+
+- SERVLET CONTAINERS NATIVOS: <Jetty, JBoss e TomCat (pré-configurado)>.
+
+- JSON CONVERTER: <Jackson <pré-configurado> (Processador JSON de alto desempenho para Java)>.
+
+- LOGBACK, SLF4J (Simple Logging Facade for Java): <Loggers <pré-configurados>>.
+
+- INICILIZAÇÃO DO SPRINGBOOT: <Starta o SpringBoot e ele inicia o Servlet Container>. <SpringApplication.run(YourClass, args)>.
+
+- ENDPOINT: <Termo usado na plataforma JavaEE ao expor Enterprise JavaBean como um Serviço Web>. <Uma boa prática é utilizar os textos no plural>.
+<Por padrão, um único método GET não precisa de path (ele retornará tudo que tiver no endereço do Endpoint>.
+
+- (REST) IDEMPOTENT: <No conceito de C(RUD) para requsições HTTP, diz que você sempre vai ter o mesmo resultado, status code, para a mesma requisição. O Post (C)RUD não é idempotente>.
+
+- PAGINAÇÃO: <Diminuir sobrecarga da DB, tempo de carga de informações (partes fracionadas), consumo de banda da aplicação, etc. Disponível no SPRING-DATA-JPA>.
+Parâmetros de URL (Pageable): &page=n&size=m&sort=name,asc/desc
+
+- SPRING-DATA:
+-- SPRING-DATA-ACCESS-EXCEPTION
+
+- SPRING-SECURITY: <Facilita Autenticação e Autorização. Default Username: user ; Password: Generated in Eclipse-Console. AntMatcher: Autenticação/Validação através de URL patterns. Também pode ser utilizado para controle de versão>.
+
+- SPRING-REST-API
+-- REST-TEMPLATE: <Classe que faz conexão e parsing do JSON para um objeto Java. getForObject() retorna o objeto puro ; getForEntity()/Exchange (retorna dados da Request conforme Collection passada via parâmetro) retorna todo o retorno da Request contendo StatusCode, etc>.
+
+- JAVA-JMS: Java Messaging Service
+
+###
+
+- @ANNOTATIONS:
+
+/***
+- @EnableAutoConfiguration: <Deixa o Spring configurar tudo com base nas dependências definidas no POM.xml>.
+
+- @ComponentScan(basePackages = "YourBasePackagePath"): <Define o path do Pacote onde se encontram os Endpoints. Se a classe estiver na raiz dos pacotes, você NÃO DEVE indicar o parâmetro basePackage>.
+- @EnableScan() ???
+
+- @Configuration: <O Spring faz a configuração na inicialização da aplicação com Classes definidas com essa anotação (e não no pom.xml)>.
+
+- @SpringBootApplication> <Faz a mesma coisa que utilizar @EnableAutoConfiguration + @Configuration + @ComponentScan>.
+***/
+
+- @RestController: <Marca um Bean como Endpoint Web. Ainda mais, difere do @Controller, pois adiciona automaticamente o @ResponseBody, que diz que você precisa retornar seu response no Body e em formato JSON>.
+
+/***
+- @RequestMapping("YourEndpoint"): <Define o endereço do Endpoint a nível de classes e métodos>.
+
+- @RequestMapping(method = RequestMethod.GET, path = "/list")
+
+- @GetMapping(path="/{id}"): <Faz o papel do @RequestMapping para o método GET. Se houver mais de 1 endpoint deve receber o parâmetro path>.
+
+- @PostMapping: <Faz o papel do @RequestMapping para o método POST. Se houver mais de 1 endpoint deve receber o parâmetro path>.
+
+- @DeleteMapping: <Faz o papel do @RequestMapping para o método DELETE. Se houver mais de 1 endpoint deve receber o parâmetro path>.
+
+- @PutMapping: <Faz o papel do @RequestMapping para o método PUT. Se houver mais de 1 endpoint deve receber o parâmetro path>.
+***/
+
+- @Autowired: <Cuida da Injeção de Dependência de Classes. Cuida automaticamente da instanciação de objetos. É interessante utilizá-lo sobre um construtor ou atributo>.
+
+- @Qualifier: <Utilizado no escopo do de Atributo. Semelhante ao @Autowired>.
+
+/***
+- @Component: <Usado junto com @Autowired. Indica ao Spring que a Classe é um componente que deve ser escaneada pelo @ComponentScan para uso na Injeção de Dependência>.
+
+- @Repository: <São especialização de @Component. Utilizada para marcar Classes DAO. Exceções não tratadas pelo desenvolvedor podem ser facilmente tratadas pelo Spring Data Access Exception>.
+
+- @Service: <São especialização de @Component. Utilizada para marcar Classes de Serviço>.
+***/
+
+- @PathVariable: <Diz qual o nome e tipo do atributo sendo capturado na URL via Expression Language. e.g path = "/{id}" getStudentById(@PathVariable("id") int id) . Nesse caso o atributo FAZ parte do path da requisição>.
+- @RequestParam: <Diz qual o nome e tipo do atributo sendo capturado na URL via Expression Language. e.g path = "/{id}" getStudentByCode(@RequestParam String code) . Nesse caso o atributo NÃO FAZ parte do path da requisição>.
+
+/***
+- @RequestBody: <Diz que na Requisição HTTP deverá vir um objeto do tipo especificado>.
+
+- @Valid: <Diz que o objeto da requisição HTTP não poderá ser nulo/vazio>.
+
+- @NotEmpty: <Hibernate. Utilizado em conjunto com o @Valid>.
+***/
+
+- @ResponseStatus(HttpStatus.<DESIRED_STATUS_CODE>): <Inserido no escopo da Classe. Diz qual status code retornará quando a classe for instanciada, por exemplo. Comum uso para classes de Exception>.
+
+/***
+- @ControllerAdvice: <Inserido no escopo da Classe. Especialização de @Component para classes que declaram métodos do tipo ExceptionHandler para serem compartilhados por várias classes @Controller. Marca classes de exceção para quando as mesmas ocorrerem (forem lançadas), para que o Spring se encarregue de disparar o exception handler especificado por @ExceptionHandler>.
+
+- @ExceptionHandler(YOUR-CLASS.class): <Inserido no escopo do método para ser adotado como handler de exceções>.
+***/
+
+- @Transactional: <Diz para um método da JPA que ocorrerá uma operação transacional e se ocorrer uma exceção unchecked o Rollback da operação deve ocorrer. A Tabela do banco deve estar utilizando a Engine InnoDB, pois MyISAM não faz Rollback>.
+
+/***
+- @EnableWebSecurity: <Inserido no escopo na Classe. Permite ao Spring encontrar e automaticamente aplicar a classe às WebSecurities globais>.
+
+- @EnableGlobalMethodSecurity(prePostEnable=true) <Inserido no escopo da Classe após o @EnableWebSecurity. Força a verificação do método "configure" antes de executar as requisições>.
+
+- @PreAuthorize("hasRole('ADMIN')"): <Inserido no escopo do método EndPoint. Faz uma verificação da regra passada por parâmetro antes de executar o método. e.g. Delete method>.
+
+- @AuthenticationPrincipal: <Inserido no escopo do parâmetro do método. Recupera informações do usuário autenticado no sistema quando a requisição atinge o método Endpoint>.
+***/
+
+- @JsonProperty("YourJSONkeyHere"): <Inserido no escopo do parâmetro do método. É usado para serialização/deserialização de atributos que trarão o retorno da Request JSON>.
+
+/***
+TESTES COM JUNIT-4
+
+- @RunWith(SpringRunner.class): <Inserido no escopo da classe. Utilizado para executar teste unitários com JUnity4>.
+
+- @DataJpaTest: <Inserida no escopo de classe e deve ser utilizada após @RunWith. Usada para testes típicos em componentes JPA (DB fake)>.
+
+- @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) <Inserida no escopo da classe e deve ser utilizada após @RunWith. Usada para testes típicos em componentes JPA (DB real). Após os testes serem executados é feito um RollBack para manter a DB com o estado original (sem modificações dos testes)>.
+
+- @Rule: <Inserido no escopo de Atributos/Métodos. Referencia regras ou métodos que retornem uma regra. Usado para testes unitários com JUnit>.
+
+- @Test: <Inserido no escopo de Método. Diz ao JUnit que o método poderá ser rodado isoladamente como um Teste Unitário (Test Case)>.
+
+- @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT): <Inserida no escopo de Classe. Pode ser especificada sobre uma classe de Testes que roda testes baseados no Spring. No caso diz para gerar porta aleatória para execução do servidor web>.
+
+- @LocalServerPort: <Inserida no escopo de Atributo/Método. Injeta uma porta HTTP para a aplicação quando é executada>.
+
+- @TestConfiguration: <Utilizada no escopo de Classe. Semelhante ao @Configuration, mas voltada para o ambiente de testes unitários. Pode definir beans adicionais/customizações para testes>.
+
+- @MockBean: <Utilizada no escopo de Atributos de beans. Mockito. Simula (mocka) dados fake para acesso a Endpoints>.
+
+- @AutoConfigureMockMvc: <Utilizada no escopo de Classe de Testes. Utilizada em conjunto com um atributo do tipo MockMvc. Habilita e configura auto-configuração do MockMvc>.
+
+- @Before: <Utilizada no escopo de Méotodo. Utilizada para forçar a execução de um método antes de qualquer outro anotado com @Test>.
+***/
+
+- @Value: <Utilizada no escopo de Atributo. Indica que o valor do atributo deverá ser preenchido pela propriedade definida em seu parâmetro>.
+
+- @Bean: <Utilizado no escopo de instâncias de objetos. Um bean é um objeto que é instanciado e gerenciado pelo Spring>.
+
+/***
+- GERANDO JAR EXECUTÁVEL COM MAVEN PELO TERMINAL
+
+- cd <MyRootProjectDirectory>.
+- mvn package -DskipTests=true
+***/
